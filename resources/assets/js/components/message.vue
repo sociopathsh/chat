@@ -1,6 +1,6 @@
 <template>
     <div>
-        <li :class="className"><slot></slot></li>
+        <li :class="className"><slot></slot> <span id="time">{{ time }}</span></li>
         <small :class="badgeClass" class="badge float-right">{{ user }}</small>
     </div>
 </template>
@@ -9,7 +9,7 @@
 
     export default {
 
-        props: ['color', 'user'],
+        props: ['color', 'user', 'time'],
 
         computed: {
             className() {
@@ -25,5 +25,12 @@
 </script>
 
 <style>
+
+    #time {
+        font-size: 10px;
+        margin-left: 20px;
+        display: block;
+        color: black;
+    }
 
 </style>

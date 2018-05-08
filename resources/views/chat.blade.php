@@ -22,8 +22,9 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <li class="list-group-item active">Chat Room</li>
+                <span class="badge badge-pill badge-primary">@{{ chat.typing }}</span>
                 <ul class="list-group" v-chat-scroll>
-                    <message v-for="value,index in chat.message" :key="value.index" :color="chat.color[index]" :user="chat.user[index]">
+                    <message v-for="value,index in chat.message" :key="value.index" :color="chat.color[index]" :user="chat.user[index]" :time="chat.time[index]">
                         @{{ value }}
                     </message>
                 </ul>

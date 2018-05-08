@@ -24973,7 +24973,9 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         chat: {
             message: [],
             user: [],
-            color: []
+            color: [],
+            typing: '',
+            time: []
         }
     },
     methods: {
@@ -24987,11 +24989,23 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
                     _this.chat.message.push(_this.message);
                     _this.chat.user.push('you');
                     _this.chat.color.push('success');
+                    _this.chat.time.push(_this.getTime());
                     _this.message = '';
                 }).catch(function (error) {
                     console.log(error);
                 });
             }
+        },
+        getTime: function getTime() {
+            var time = new Date();
+            return time.getHours() + ':' + time.getMinutes();
+        }
+    },
+    watch: {
+        message: function message() {
+            Echo.private('chat').whisper('typing', {
+                name: this.message
+            });
         }
     },
     mounted: function mounted() {
@@ -25001,6 +25015,13 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             _this2.chat.message.push(e.message);
             _this2.chat.user.push(e.user);
             _this2.chat.color.push('warning');
+            _this2.chat.time.push(_this2.getTime());
+        }).listenForWhisper('typing', function (e) {
+            if (e.name != '') {
+                _this2.chat.typing = 'typing...';
+            } else {
+                _this2.chat.typing = '';
+            }
         });
     }
 });
@@ -52551,7 +52572,7 @@ exports = module.exports = __webpack_require__(49)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n#time {\n    font-size: 10px;\n    margin-left: 20px;\n    display: block;\n    color: black;\n}\n\n", ""]);
 
 // exports
 
@@ -52916,7 +52937,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['color', 'user'],
+    props: ['color', 'user', 'time'],
 
     computed: {
         className: function className() {
@@ -52938,7 +52959,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("li", { class: _vm.className }, [_vm._t("default")], 2),
+    _c(
+      "li",
+      { class: _vm.className },
+      [
+        _vm._t("default"),
+        _vm._v(" "),
+        _c("span", { attrs: { id: "time" } }, [_vm._v(_vm._s(_vm.time))])
+      ],
+      2
+    ),
     _vm._v(" "),
     _c("small", { staticClass: "badge float-right", class: _vm.badgeClass }, [
       _vm._v(_vm._s(_vm.user))
